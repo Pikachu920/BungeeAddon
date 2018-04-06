@@ -1,0 +1,6 @@
+name: BungeeAddon
+description: A simple skript addon for basic bungee control
+main: com.pikachu.bungeeaddon.BungeeAddon
+version: 1.0
+author: sky_high
+depend: [Skript]
