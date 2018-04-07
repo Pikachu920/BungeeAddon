@@ -11,28 +11,24 @@ import ch.njol.util.Kleenean;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import com.pikachu.bungeeaddon.AsyncEffect;
 import com.pikachu.bungeeaddon.BungeeAddon;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.plugin.messaging.PluginMessageListener;
-import sun.font.Script;
 
 import java.lang.reflect.Field;
 import java.util.Set;
 
 public class EffGrabServers extends Effect implements PluginMessageListener {
 
+	private static final Field DELAYED;
 	public static String[] servers;
 
 	static {
 		Skript.registerEffect(EffGrabServers.class, "grab all bungee[ ]cord servers");
 	}
-
-	private Event event;
-	private static final Field DELAYED;
 
 	static {
 		Field _DELAYED = null;
@@ -45,6 +41,8 @@ public class EffGrabServers extends Effect implements PluginMessageListener {
 		}
 		DELAYED = _DELAYED;
 	}
+
+	private Event event;
 
 	public EffGrabServers() {
 		Messenger messenger = Bukkit.getServer().getMessenger();
@@ -95,7 +93,7 @@ public class EffGrabServers extends Effect implements PluginMessageListener {
 	public void onPluginMessageReceived(String channel, Player player, byte[] message) {
 		ByteArrayDataInput in = ByteStreams.newDataInput(message);
 		if ("GetServers".equals(in.readUTF())) {
-			servers	= in.readUTF().split(", ");
+			servers = in.readUTF().split(", ");
 			Bukkit.getScheduler().runTask(BungeeAddon.getInstance(), () -> TriggerItem.walk(getNext(), event));
 		}
 	}

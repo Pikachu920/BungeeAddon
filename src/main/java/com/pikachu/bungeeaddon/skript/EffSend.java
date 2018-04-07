@@ -11,8 +11,6 @@ import com.pikachu.bungeeaddon.BungeeAddon;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.plugin.messaging.Messenger;
-import org.bukkit.plugin.messaging.PluginMessageListener;
 
 public class EffSend extends AsyncEffect {
 
@@ -20,12 +18,11 @@ public class EffSend extends AsyncEffect {
 		Skript.registerEffect(EffSend.class, "(send|move) %players% to [server] %string%");
 	}
 
+	private Expression<Player> players;
+	private Expression<String> server;
 	public EffSend() {
 		Bukkit.getServer().getMessenger().registerOutgoingPluginChannel(BungeeAddon.getInstance(), BungeeAddon.CHANNEL);
 	}
-
-	private Expression<Player> players;
-	private Expression<String> server;
 
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
