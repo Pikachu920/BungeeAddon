@@ -19,7 +19,7 @@ import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.lang.reflect.Field;
-import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 
 public class EffGrabServers extends Effect implements PluginMessageListener {
@@ -28,7 +28,7 @@ public class EffGrabServers extends Effect implements PluginMessageListener {
 	public static String[] servers;
 
 	static {
-		Skript.registerEffect(EffGrabServers.class, "grab all bungee[ ]cord servers");
+		Skript.registerEffect(EffGrabServers.class, "grab all [bungee[ ]cord] servers");
 	}
 
 	static {
@@ -60,14 +60,15 @@ public class EffGrabServers extends Effect implements PluginMessageListener {
 	@Override
 	protected void execute(Event e) {
 		Bukkit.getScheduler().runTaskAsynchronously(BungeeAddon.getInstance(), () -> {
-			Iterator<? extends Player> iterator = Bukkit.getOnlinePlayers().iterator();
-			if (!iterator.hasNext()) {
+			Optional<? extends Player> player = Bukkit.getOnlinePlayers().stream().findAny();
+			if (!player.isPresent()) {
 				BungeeAddon.getInstance().getLogger().warning("Tried to grab all bungeecord servers, but no players were online.");
+				return;
 			}
 			event = e;
 			ByteArrayDataOutput out = ByteStreams.newDataOutput();
 			out.writeUTF("GetServers");
-			iterator.next().sendPluginMessage(BungeeAddon.getInstance(), BungeeAddon.CHANNEL, out.toByteArray());
+			player.get().sendPluginMessage(BungeeAddon.getInstance(), BungeeAddon.CHANNEL, out.toByteArray());
 		});
 	}
 

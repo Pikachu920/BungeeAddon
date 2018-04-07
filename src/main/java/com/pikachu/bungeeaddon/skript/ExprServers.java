@@ -12,7 +12,7 @@ public class ExprServers extends SimpleExpression<String> {
 
 	static {
 		Skript.registerExpression(ExprServers.class, String.class, ExpressionType.SIMPLE,
-				"(all [grabbed]|[last] grabbed) bungee[ ]cord servers");
+				"(all [grabbed]|[last] grabbed) [bungee[ ]cord] servers");
 	}
 
 	@Override
